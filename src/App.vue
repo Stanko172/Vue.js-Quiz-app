@@ -4,7 +4,11 @@
     <b-container class="bv-example-row">
     <b-row>
       <b-col sm="12">
-        <QuestionBox />
+        <QuestionBox 
+          v-if="questions.length"
+          :currentQuestion="questions[index]"
+          :next="next"
+        />
       </b-col>
     </b-row>
   </b-container>
@@ -23,9 +27,15 @@ export default {
   },
   data(){
     return{
-      quetions: []
+      questions: [],
+      index: 0
     }
   },
+  methods:{
+      next(){
+        this.index++;
+      }
+    },
   mounted: function(){
     fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple',{
       method: 'get'
@@ -34,7 +44,7 @@ export default {
         return response.json();
       })
       .then(responseData =>{
-        this.quetions = responseData.results
+        this.questions = responseData.results
       })
       
   }
